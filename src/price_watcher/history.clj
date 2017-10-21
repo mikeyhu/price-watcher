@@ -32,4 +32,4 @@
     (with-open [r (PushbackReader. (clojure.java.io/reader location))]
       (binding [*read-eval* false]
         (read r)))
-    {}))
+    (init)))

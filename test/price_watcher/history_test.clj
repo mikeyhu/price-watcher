@@ -42,7 +42,7 @@
       (history/save-to test-file test-data)
       (is (= test-data (history/load-from test-file))))))
 
-(deftest loads-nil-from-not-existing-file
+(deftest loads-initialized-store-from-not-existing-file
   (testing "saving and loading"
     (let [test-file (str "/tmp/" (uuid) ".cljdata")]
-      (is (= {} (history/load-from test-file))))))
+      (is (= (history/init) (history/load-from test-file))))))
