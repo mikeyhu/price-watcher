@@ -7,6 +7,7 @@
                  [org.clojure/clojure "1.8.0"]
                  [clj-http "3.7.0"]
                  [cheshire "5.8.0"]
+                 [clj-time "0.12.2"]
                  ]
   :main ^:skip-aot price-watcher.core
   :target-path "target/%s"

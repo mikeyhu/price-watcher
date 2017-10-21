@@ -14,6 +14,8 @@
   [db]
   (first (:recent db)))
 
+
+;saving and loading
 (defn save-to
   [location data]
   (with-open [w (clojure.java.io/writer location)]
