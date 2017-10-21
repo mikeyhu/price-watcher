@@ -1,7 +1,8 @@
 (ns price-watcher.core
-  (:gen-class))
+  (:gen-class)
+  (:require [price-watcher.collector :as collector]))
 
 (defn -main
   "I don't do a whole lot ... yet."
   [& args]
-  (println "Hello, World!"))
+  (println (collector/collect-price :ETH :GBP)))
