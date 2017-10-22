@@ -35,14 +35,21 @@
   (testing
     (is (not (history/file-exists "/bob")))))
 
-(deftest can-save-and-load-some-data
-  (testing "saving and loading"
-    (let [test-file (str "/tmp/" (uuid) ".cljdata")
-          test-data `(1 2 3)]
-      (history/save-to test-file test-data)
-      (is (= test-data (history/load-from test-file))))))
-
 (deftest loads-initialized-store-from-not-existing-file
   (testing "saving and loading"
     (let [test-file (str "/tmp/" (uuid) ".cljdata")]
       (is (= (history/init) (history/load-from test-file))))))
+
+(deftest can-save-and-load-history-in-order
+  (let [test-file (str "/tmp/" (uuid) ".cljdata")
+        test-data (history/with
+                    (history/init)
+                    {100 100 300 300 200 200})]
+
+    (testing "saving and loading with sorted map"
+      (history/save-to test-file test-data)
+      (is (= [300 300] (history/most-recent (history/load-from test-file)))))
+
+    (testing "saving more data into a file and reloading"
+      (history/save-to test-file (history/with (history/load-from test-file) {400 400}))
+      (is (= [400 400] (history/most-recent (history/load-from test-file)))))))

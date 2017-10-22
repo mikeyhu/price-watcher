@@ -2,7 +2,8 @@
   (:require [clojure.java.io :as io])
   (:import (java.io PushbackReader)))
 
-(defn init [] {:recent (sorted-map-by >)})
+(defn init []
+  {:recent (sorted-map-by >)})
 
 (defn with
   [db data]
@@ -26,10 +27,15 @@
   [location]
   (.exists (io/as-file location)))
 
+(defn history-as-sorted
+  [db]
+  (with (init) (:recent db)))
+
 (defn load-from
   [location]
   (if (file-exists location)
     (with-open [r (PushbackReader. (clojure.java.io/reader location))]
       (binding [*read-eval* false]
-        (read r)))
+        (history-as-sorted (read r))))
     (init)))
+
