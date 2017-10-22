@@ -8,5 +8,11 @@
 (defn with-timestamp [data] {(timestamp) data})
 
 (defn add-price-to-history
-  [store price]
-  (history/with store (with-timestamp price)))
+  [db price]
+  (history/with db (with-timestamp price)))
+
+(defn last-24hours
+  [db]
+  (let [yesterday (tc/to-long (t/minus (t/now) (t/days 1)))]
+    (history/after db yesterday)
+    ))

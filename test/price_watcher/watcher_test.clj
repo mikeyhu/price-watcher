@@ -1,8 +1,11 @@
 (ns price-watcher.watcher-test
   (:require [clojure.test :refer :all]
             [clj-time.core :as t]
+            [clj-time.coerce :as tc]
             [price-watcher.watcher :as w]
             [price-watcher.history :as h]))
+
+(def ts tc/to-long)
 
 (deftest create-timestamp
   (with-redefs [t/now (fn [] (t/date-time 2017 10 21))]
@@ -23,3 +26,17 @@
       (is (= 7 (val (h/most-recent updated-store))))
       )))
 
+(deftest finds-last-24hours
+  (let [amoment (t/date-time 2017 10 21)
+        less-than-a-day-ago (t/minus amoment (t/hours 23))
+        more-than-a-day-ago (t/minus amoment (t/hours 25))]
+    (with-redefs [t/now (fn [] amoment)]
+
+      (testing "returns a subset of the last 24 hours"
+        (let [store (h/with (h/init) {(ts amoment)             100
+                                      (ts less-than-a-day-ago) 110
+                                      (ts more-than-a-day-ago) 120})]
+          (is (= {(ts amoment)             100
+                  (ts less-than-a-day-ago) 110}
+                 (w/last-24hours store)))
+          )))))

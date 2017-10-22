@@ -15,6 +15,9 @@
   [db]
   (first (:recent db)))
 
+(defn before [database ts] (into {} (subseq (:recent database) > ts)))
+
+(defn after [database ts] (into {} (subseq (:recent database) < ts)))
 
 ;saving and loading
 (defn save-to
