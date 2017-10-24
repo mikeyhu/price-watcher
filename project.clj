@@ -8,6 +8,7 @@
                  [clj-http "3.7.0"]
                  [cheshire "5.8.0"]
                  [clj-time "0.12.2"]
+                 [environ "1.1.0"]
                  ]
   :main ^:skip-aot price-watcher.core
   :target-path "target/%s"
