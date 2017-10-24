@@ -16,3 +16,10 @@
   (let [yesterday (tc/to-long (t/minus (t/now) (t/days 1)))]
     (history/after db yesterday)
     ))
+
+(defn difference-over-time
+  [period]
+  (let [latest (val (first period))
+        oldest (val (last period))]
+    (double (* latest (/ 1 oldest))
+    )))

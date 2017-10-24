@@ -40,3 +40,13 @@
                   (ts less-than-a-day-ago) 110}
                  (w/last-24hours store)))
           )))))
+
+(deftest finds-difference-over-24-hours
+  (let [amoment (t/date-time 2017 10 21)
+        oldest (t/minus amoment (t/hours 23))
+        newest (t/minus amoment (t/hours 1))]
+
+    (testing "finds a percentage difference between oldest and newest"
+      (let [period {(ts newest) 180 (ts oldest) 200}]
+        (is (= 0.9 (w/difference-over-time period)))
+        ))))
